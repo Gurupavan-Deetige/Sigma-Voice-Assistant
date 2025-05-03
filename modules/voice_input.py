@@ -1,18 +1,22 @@
 import speech_recognition as sr
 
-def listen():
+def listen_for_commands():
     recognizer = sr.Recognizer()
+
     with sr.Microphone() as source:
-        print("🎤 Listening...")
+        print("Adjusting for ambient noise...")
+        recognizer.adjust_for_ambient_noise(source, duration=1)  # Adjust for ambient noise
+        print("Listening for commands...")
         audio = recognizer.listen(source)
 
     try:
-        text = recognizer.recognize_google(audio)
-        print(f"✅ You said: {text}")
-        return text
+        # Use pocketsphinx for offline recognition
+        command = recognizer.recognize_sphinx(audio)
+        print(f"Command recognized: {command}")
+        return command
     except sr.UnknownValueError:
-        print("❌ Sorry, I could not understand.")
-        return ""
+        print("Sorry, I didn't understand that.")
+        return None
     except sr.RequestError:
-        print("❌ Sorry, the service is down.")
-        return ""
+        print("Speech recognition service unavailable.")
+        return None
