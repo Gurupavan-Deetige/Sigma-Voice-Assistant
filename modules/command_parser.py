@@ -1,3 +1,6 @@
+# modules/command_parser.py
+from modules.system_control import take_screenshot
+
 def parse_command(text):
     text = text.lower()
     
@@ -8,5 +11,7 @@ def parse_command(text):
         return "open_google"
     elif "exit" in text or "quit" in text:
         return "exit"
+    elif "take screenshot" in text:
+        return take_screenshot()  # Call the screenshot function from system_control
     else:
         return "unknown"
